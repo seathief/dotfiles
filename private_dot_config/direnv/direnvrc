@@ -1,0 +1,23 @@
+layout_uv() {
+    local python_version=${1:-}
+    local venv_path=".venv"
+    
+    if [[ -d "$venv_path" ]]; then
+        VIRTUAL_ENV="$(pwd)/$venv_path"
+    fi
+
+    if [[ -z $VIRTUAL_ENV || ! -d $VIRTUAL_ENV ]]; then
+        if [[ -z "$python_version" ]]; then
+            log_status "No virtual environment exists. Executing \`uv venv\` to create one."
+            uv venv
+        else
+            log_status "No virtual environment exists. Executing \`uv venv --python=$python_version\` to create one."
+            uv venv --python="$python_version"
+        fi
+        VIRTUAL_ENV="$(pwd)/$venv_path"
+    fi
+
+    PATH_add "$VIRTUAL_ENV/bin"
+    export UV_ACTIVE=1  # or VENV_ACTIVE=1
+    export VIRTUAL_ENV
+}

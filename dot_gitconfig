@@ -1,0 +1,40 @@
+[user]
+	name = Ron Chen
+	email = seathief@gmail.com
+[alias]
+	co = checkout
+	st = status
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	ci = commit
+[core]
+	excludesfile = /Users/seathief/.gitignore_global
+	autocrlf = input
+#	pager = delta --dark
+[difftool "sourcetree"]
+	cmd = /usr/local/bin/bcomp \"$LOCAL\" \"$REMOTE\"
+	path = -ro
+[mergetool "sourcetree"]
+	cmd = /usr/local/bin/bcomp \"$LOCAL\" \"$REMOTE\" \"$BASE\" \"$MERGED\"
+	trustExitCode = true
+[commit]
+	template = /Users/seathief/.stCommitMsg
+[merge]
+	tool = bc3
+[diff]
+	tool = bc3
+[difftool "bcomp"]
+	path = /usr/local/bin/bcomp
+[mergetool "bcomp"]
+	path = /usr/local/bin/bcomp
+[difftool "bc3"]
+	path = /usr/local/bin/bcomp
+[mergetool "bc3"]
+	path = /usr/local/bin/bcomp
+[mergetool]
+	keepBackup = false
+[branch]
+  autosetuprebase = always
+[difftool]
+	prompt = false
+[init]
+	defaultBranch = master

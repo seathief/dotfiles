@@ -1,0 +1,362 @@
+
+
+
+# If you come from bash you might have to change your $PATH.
+# export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=/usr/local/sbin:"$PATH":~/bin
+
+
+# for "Insecure completion-dependent directories detected:" workaround
+export ZSH_DISABLE_COMPFIX=true
+
+# Path to your oh-my-zsh installation.
+export ZSH="/Users/seathief/.oh-my-zsh"
+
+# Set name of the theme to load --- if set to "random", it will
+# load a random theme each time oh-my-zsh is loaded, in which case,
+# to know which specific one was loaded, run: echo $RANDOM_THEME
+# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+ZSH_THEME="ys"
+
+# Set list of themes to pick from when loading at random
+# Setting this variable when ZSH_THEME=random will cause zsh to load
+# a theme from this variable instead of looking in $ZSH/themes/
+# If set to an empty array, this variable will have no effect.
+# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
+
+# Uncomment the following line to use case-sensitive completion.
+# CASE_SENSITIVE="true"
+
+# Uncomment the following line to use hyphen-insensitive completion.
+# Case-sensitive completion must be off. _ and - will be interchangeable.
+# HYPHEN_INSENSITIVE="true"
+
+# Uncomment the following line to disable bi-weekly auto-update checks.
+# DISABLE_AUTO_UPDATE="true"
+
+# Uncomment the following line to automatically update without prompting.
+# DISABLE_UPDATE_PROMPT="true"
+
+# Uncomment the following line to change how often to auto-update (in days).
+# export UPDATE_ZSH_DAYS=13
+
+# Uncomment the following line if pasting URLs and other text is messed up.
+DISABLE_MAGIC_FUNCTIONS=true
+
+# Uncomment the following line to disable colors in ls.
+# DISABLE_LS_COLORS="true"
+
+# Uncomment the following line to disable auto-setting terminal title.
+# DISABLE_AUTO_TITLE="true"
+
+# Uncomment the following line to enable command auto-correction.
+# ENABLE_CORRECTION="true"
+
+# Uncomment the following line to display red dots whilst waiting for completion.
+# COMPLETION_WAITING_DOTS="true"
+
+# Uncomment the following line if you want to disable marking untracked files
+# under VCS as dirty. This makes repository status check for large repositories
+# much, much faster.
+# DISABLE_UNTRACKED_FILES_DIRTY="true"
+
+# Uncomment the following line if you want to change the command execution time
+# stamp shown in the history command output.
+# You can set one of the optional three formats:
+# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# or set a custom format using the strftime function format specifications,
+# see 'man strftime' for details.
+# HIST_STAMPS="mm/dd/yyyy"
+
+# Would you like to use another custom folder than $ZSH/custom?
+# ZSH_CUSTOM=/path/to/new-custom-folder
+
+# Which plugins would you like to load?
+# Standard plugins can be found in $ZSH/plugins/
+# Custom plugins may be added to $ZSH_CUSTOM/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(
+  git extract
+)
+# plugins=(autoswitch_virtualenv $plugins)
+
+source $ZSH/oh-my-zsh.sh
+
+# User configuration
+
+# export MANPATH="/usr/local/man:$MANPATH"
+
+# You may need to manually set your language environment
+# export LANG=en_US.UTF-8
+
+# Preferred editor for local and remote sessions
+# if [[ -n $SSH_CONNECTION ]]; then
+#   export EDITOR='vim'
+# else
+#   export EDITOR='mvim'
+# fi
+
+# Compilation flags
+# export ARCHFLAGS="-arch x86_64"
+
+# ssh
+# export SSH_KEY_PATH="~/.ssh/rsa_id"
+
+# Set personal aliases, overriding those provided by oh-my-zsh libs,
+# plugins, and themes. Aliases can be placed here, though oh-my-zsh
+# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# For a full list of active aliases, run `alias`.
+#
+# Example aliases
+# alias zshconfig="mate ~/.zshrc"
+# alias ohmyzsh="mate ~/.oh-my-zsh"
+
+alias mux="tmuxinator"
+
+export EDITOR='vim'
+
+# exa: a replacement  a ls
+alias lls="exa"
+
+# history setting
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=10000000
+SAVEHIST=10000000
+setopt SHARE_HISTORY             # Share history between all sessions.
+setopt EXTENDED_HISTORY
+setopt HIST_EXPIRE_DUPS_FIRST    # Expire duplicate entries first when trimming history.
+setopt HIST_IGNORE_DUPS          # Don't record an entry that was just recorded again.
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_IGNORE_SPACE
+setopt HIST_FIND_NO_DUPS
+setopt HIST_SAVE_NO_DUPS
+setopt HIST_BEEP
+
+
+alias lsd="ls -d */"
+alias lsf="find . -maxdepth 1 -type f"
+
+# google-cloud
+#source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
+#source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'     
+
+# autojump
+#[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
+
+#alias z="j"
+
+# zsh-completions
+#fpath=(/usr/local/share/zsh-completions $fpath)
+                                                                                                                                          
+## fzf: A command-line fuzzy finder 
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+alias preview="fzf --preview 'bat --color \"always\" {}'"
+# add support for ctrl+o to open selected file in VS Code
+export FZF_DEFAULT_COMMAND='fd --type file'
+export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(code {})+abort'"
+
+## ncdu: du replacemnt
+#alias du="ncdu --color dark -rr -x --exclude .git --exclude node_modules"
+
+
+## install an homebrew formula without updating homebrew itself
+export HOMEBREW_NO_AUTO_UPDATE=1
+## thefuck
+eval $(thefuck --alias)
+
+## POWERLEVEL9k theme config
+# command line 左邊想顯示的內容
+# POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir dir_writable vcs vi_mode) # <= left prompt 設了 "dir"
+
+# command line 右邊想顯示的內容
+# POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status time) # <= right prompt 設了 "time"
+
+# git 資訊多顯示icon
+# POWERLEVEL9K_MODE='nerdfont-complete'
+
+## rbenv
+## https://dev.to/krtb/why-and-how-i-replaced-rvm-with-rbenv-23ad
+#eval "$(rbenv init -)"
+
+
+# nvm
+## https://yoember.com/nodejs/the-best-way-to-install-node-js-with-yarn/
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# mysql-client
+#export PATH="/usr/local/opt/mysql-client/bin:$PATH"
+
+# jenv
+# export PATH="$HOME/.jenv/bin:$PATH"
+# eval "$(jenv init -)"
+
+
+# rbenv
+# export GEM_HOME=$HOME/gems
+# export PATH=$GEM_HOME/bin:$PATH
+
+# if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+
+# gnu-tar as tar
+#PATH="/usr/local/opt/gnu-tar/libexec/gnubin:$PATH"
+
+# gnu-sed as sed
+#PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
+
+# gnu-grep as grep
+#PATH="/usr/local/opt/grep/libexec/gnubin:$PATH"
+
+# gawk
+#alias gawk="awk"
+
+# mosh 
+mosh-screen () {
+  mosh "$@" -- screen -dR mosh-session
+}
+
+mosh-tmux () {
+  mosh "$@" -- tmux new -ADs mosh-session
+}
+
+# osx port listening
+# https://stackoverflow.com/questions/4421633/who-is-listening-on-a-given-tcp-port-on-mac-os-x
+listening() {
+    if [ $# -eq 0 ]; then
+        sudo lsof -iTCP -sTCP:LISTEN -n -P
+    elif [ $# -eq 1 ]; then
+        sudo lsof -iTCP -sTCP:LISTEN -n -P | grep -i --color $1
+    else
+        echo "Usage: listening [pattern]"
+    fi
+}
+
+# merge pdf
+cpdf () { 
+    gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile="$1" "${@:2}"
+}
+
+# antlr 4 , 『brew install antlr』don't test it properly
+#export CLASSPATH=".:/usr/local/lib/antlr-4.7.1-complete.jar:$CLASSPATH"
+#alias antlr4='java -Xmx500M -cp "/usr/local/lib/antlr-4.7.1-complete.jar:$CLASSPATH" org.antlr.v4.Tool'
+#alias grun='java -Xmx500M -cp "/usr/local/lib/antlr-4.7.1-complete.jar:$CLASSPATH" org.antlr.v4.gui.TestRig'
+
+#alias y="yarn"
+
+# uuid depends on python
+#alias uuid="python -c 'import sys,uuid; sys.stdout.write(uuid.uuid4().hex)' | pbcopy && pbpaste && echo"
+
+# golang setup
+#export GOPATH="${HOME}/.go"
+#export GOROOT="$(brew --prefix golang)/libexec"
+#export PATH="$PATH:${GOPATH}/bin:${GOROOT}/bin"
+
+# homebrew locale problem/vim report error/complain of mosh to remote linux machie
+# credit goes to https://ryudo.tw/blog/2015/02/20/fix-locale-in-linux/
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+
+# icu4c
+#export PATH="/usr/local/opt/icu4c/sbin:$PATH"
+#export PATH="/usr/local/opt/icu4c/bin:$PATH"
+
+# inetutils: ftp/rcp/rlogin/rsh/telnet?
+#export PATH="/usr/local/opt/inetutils/libexec/gnubin:$PATH"
+
+# perl
+# eval "$(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib=$HOME/perl5)"
+
+# starship 
+# eval "$(starship init zsh)"
+
+# doom emacs
+export PATH="$HOME/.emacs.d/bin:$PATH"
+
+# pipx
+## Created by `userpath` on 2020-10-08 07:34:06
+# export PATH="$PATH:/Users/seathief/.local/bin"
+
+# autoload -U bashcompinit
+# bashcompinit
+# eval "$(register-python-argcomplete pipx)"
+
+# pyenv
+#export PYENV_ROOT="$HOME/.pyenv"
+#command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+#eval "$(pyenv init -)"
+
+# pyenv complain zlib not available(osx env.)
+# https://github.com/pyenv/pyenv/wiki/Common-build-problems
+# CFLAGS="-I$(xcrun --show-sdk-path)/usr/include"
+# CPPFLAGS="-I$(brew --prefix zlib)/include"
+# PKG_CONFIG_PATH="/usr/local/opt/zlib/lib/pkgconfig"
+
+# if which pyenv-virtualenv-init > /dev/null; then 
+#   eval "$(pyenv virtualenv-init -)";
+# fi
+
+rga-fzf() {
+	RG_PREFIX="rga --files-with-matches"
+	local file
+	file="$(
+		FZF_DEFAULT_COMMAND="$RG_PREFIX '$1'" \
+			fzf --sort --preview="[[ ! -z {} ]] && rga --pretty --context 5 {q} {}" \
+				--phony -q "$1" \
+				--bind "change:reload:$RG_PREFIX {q}" \
+				--preview-window="70%:wrap"
+	)" &&
+	echo "opening $file" &&
+	xdg-open "$file"
+}
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+#export SDKMAN_DIR="/Users/seathief/.sdkman"
+#[[ -s "/Users/seathief/.sdkman/bin/sdkman-init.sh" ]] && source "/Users/seathief/.sdkman/bin/sdkman-init.sh"
+
+# terraform
+#autoload -U +X bashcompinit && bashcompinit
+#complete -o nospace -C /usr/local/bin/terraform terraform
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/usr/local/Caskroom/miniconda/base/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/usr/local/Caskroom/miniconda/base/etc/profile.d/conda.sh" ]; then
+        . "/usr/local/Caskroom/miniconda/base/etc/profile.d/conda.sh"
+    else
+        export PATH="/usr/local/Caskroom/miniconda/base/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
+
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /usr/local/bin/packer packer
+
+# Added by Windsurf
+export PATH="/Users/seathief/.codeium/windsurf/bin:$PATH"
+
+# Postgresql@16
+export PATH="/usr/local/opt/postgresql@16/bin:$PATH"
+
+# direnv
+eval "$(direnv hook zsh)"
+
+# Shell-GPT integration ZSH v0.2
+_sgpt_zsh() {
+if [[ -n "$BUFFER" ]]; then
+    _sgpt_prev_cmd=$BUFFER
+    BUFFER+="⌛"
+    zle -I && zle redisplay
+    BUFFER=$(sgpt --shell <<< "$_sgpt_prev_cmd" --no-interaction)
+    zle end-of-line
+fi
+}
+zle -N _sgpt_zsh
+bindkey ^l _sgpt_zsh
+# Shell-GPT integration ZSH v0.2
