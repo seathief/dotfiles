@@ -341,13 +341,16 @@ autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /usr/local/bin/packer packer
 
 # Added by Windsurf
-export PATH="/Users/seathief/.codeium/windsurf/bin:$PATH"
+export PATH="$HOME/.codeium/windsurf/bin:$PATH"
 
 # Postgresql@16
 export PATH="/usr/local/opt/postgresql@16/bin:$PATH"
 
 # direnv
 eval "$(direnv hook zsh)"
+
+# OPENAI
+export OPENAI_API_KEY=$(pass show openai)
 
 # Shell-GPT integration ZSH v0.2
 _sgpt_zsh() {
@@ -362,3 +365,4 @@ fi
 zle -N _sgpt_zsh
 bindkey ^l _sgpt_zsh
 # Shell-GPT integration ZSH v0.2
+
