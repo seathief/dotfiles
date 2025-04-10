@@ -1,2 +1,13 @@
 *~
 .DS_Store
+
+# Direnv files
+.direnv
+.envrc
+
+# Editor specific files and folders
+.idea
+.vscode
+
+# sdkman
+.sdkmanrc

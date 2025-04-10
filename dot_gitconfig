@@ -1,40 +1,43 @@
 [user]
 	name = Ron Chen
 	email = seathief@gmail.com
+[core]
+	excludesFile = ~/.gitignore_global
+	pager = delta
+[commit]
+	template = /Users/seathief/.stCommitMsg
+[init]
+	defaultBranch = main
 [alias]
+	lg = log --color --graph --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
 	co = checkout
 	st = status
-	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
 	ci = commit
-[core]
-	excludesfile = /Users/seathief/.gitignore_global
-	autocrlf = input
-#	pager = delta --dark
+[interactive]
+	diffFilter = delta --color-only
+[delta]
+	line-numbers = true
+	navigate = true  # use n and N to move between diff sections
+	dark = true      # or light = true, or omit for auto-detection
+	side-by-side = true
+
+[diff]
+	tool = delta
+[difftool "bcomp"]
+	cmd = \"bcomp\" \"$LOCAL\" \"$REMOTE\"
 [difftool "sourcetree"]
 	cmd = /usr/local/bin/bcomp \"$LOCAL\" \"$REMOTE\"
 	path = -ro
+[difftool]
+	prompt = false
+
+[merge]
+	tool = delta
+	conflictstyle = zdiff3
+[mergetool "bcomp"]
+	cmd = \"bcomp\" \"$LOCAL\" \"$LOCAL\" \"$REMOTE\" \"$BASE\" \"$MERGED\"
+	trustExitCode = true
 [mergetool "sourcetree"]
 	cmd = /usr/local/bin/bcomp \"$LOCAL\" \"$REMOTE\" \"$BASE\" \"$MERGED\"
 	trustExitCode = true
-[commit]
-	template = /Users/seathief/.stCommitMsg
-[merge]
-	tool = bc3
-[diff]
-	tool = bc3
-[difftool "bcomp"]
-	path = /usr/local/bin/bcomp
-[mergetool "bcomp"]
-	path = /usr/local/bin/bcomp
-[difftool "bc3"]
-	path = /usr/local/bin/bcomp
-[mergetool "bc3"]
-	path = /usr/local/bin/bcomp
-[mergetool]
-	keepBackup = false
-[branch]
-  autosetuprebase = always
-[difftool]
-	prompt = false
-[init]
-	defaultBranch = master
+

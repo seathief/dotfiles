@@ -251,9 +251,9 @@ cpdf () {
 #alias uuid="python -c 'import sys,uuid; sys.stdout.write(uuid.uuid4().hex)' | pbcopy && pbpaste && echo"
 
 # golang setup
-#export GOPATH="${HOME}/.go"
-#export GOROOT="$(brew --prefix golang)/libexec"
-#export PATH="$PATH:${GOPATH}/bin:${GOROOT}/bin"
+export GOPATH="${HOME}/.go"
+export GOROOT="$(brew --prefix golang)/libexec"
+export PATH="$PATH:${GOPATH}/bin:${GOROOT}/bin"
 
 # homebrew locale problem/vim report error/complain of mosh to remote linux machie
 # credit goes to https://ryudo.tw/blog/2015/02/20/fix-locale-in-linux/
@@ -314,8 +314,8 @@ rga-fzf() {
 }
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-#export SDKMAN_DIR="/Users/seathief/.sdkman"
-#[[ -s "/Users/seathief/.sdkman/bin/sdkman-init.sh" ]] && source "/Users/seathief/.sdkman/bin/sdkman-init.sh"
+export SDKMAN_DIR="/Users/seathief/.sdkman"
+[[ -s "/Users/seathief/.sdkman/bin/sdkman-init.sh" ]] && source "/Users/seathief/.sdkman/bin/sdkman-init.sh"
 
 # terraform
 #autoload -U +X bashcompinit && bashcompinit
@@ -339,6 +339,10 @@ unset __conda_setup
 
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /usr/local/bin/packer packer
+
+# VSCode shell integration
+[[ "$TERM_PROGRAM" == "vscode" ]] && . "$(code --locate-shell-integration-path zsh)"
+
 
 # Added by Windsurf
 export PATH="$HOME/.codeium/windsurf/bin:$PATH"
@@ -366,3 +370,10 @@ zle -N _sgpt_zsh
 bindkey ^l _sgpt_zsh
 # Shell-GPT integration ZSH v0.2
 
+<<<<<<< Updated upstream
+||||||| Stash base
+=======
+fpath+=~/.zfunc; autoload -Uz compinit; compinit
+
+zstyle ':completion:*' menu select
+>>>>>>> Stashed changes
