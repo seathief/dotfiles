@@ -1,5 +1,18 @@
+{{ $homebrew_home := "" -}}
+{{ if eq .chezmoi.hostname "m1" -}}
+{{ $homebrew_home = "/opt/homebrew" -}}
+{{ else if eq .chezmoi.hostname "mbpr13" -}}
+{{ $homebrew_home = "/usr/local" -}}
+{{ else -}}
+# other operating system
+{{ end -}}
+# Load compinit first
+autoload -Uz compinit
+compinit
+
+# zinit
 # ref https://medium.com/@kyomind/linux-dev-setup-2705a89b6f48
-source /usr/local/opt/zinit/zinit.zsh
+source {{ $homebrew_home }}/opt/zinit/zinit.zsh
 
 # zsh 套件四天王
 zinit light zsh-users/zsh-completions
@@ -53,19 +66,19 @@ alias lla='eza --long --all --color auto --icons --sort=type'
 alias lr='eza -lR'
 
 # gnu find(findutils) as find
-export PATH="/usr/local/opt/findutils/libexec/gnubin:$PATH"
+export PATH="{{ $homebrew_home }}/opt/findutils/libexec/gnubin:$PATH"
 
 # gnu-tar as tar
-export PATH="/usr/local/opt/gnu-tar/libexec/gnubin:$PATH" 
+export PATH="{{ $homebrew_home }}/opt/gnu-tar/libexec/gnubin:$PATH" 
 
 # gnu-sed as sed
-export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
+export PATH="{{ $homebrew_home }}/opt/gnu-sed/libexec/gnubin:$PATH"
 
 # gnu-grep as grep
-export PATH="/usr/local/opt/grep/libexec/gnubin:$PATH"
+export PATH="{{ $homebrew_home }}/opt/grep/libexec/gnubin:$PATH"
 
 # gawk
-export PATH="/usr/local/opt/gawk/libexec/gnubin:$PATH"
+export PATH="{{ $homebrew_home }}/opt/gawk/libexec/gnubin:$PATH"
 alias gawk="awk"
 
 # inetutils: ftp/rcp/rlogin/rsh/telnet?
@@ -199,14 +212,14 @@ export EDITOR="code --wait"
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/usr/local/Caskroom/miniconda/base/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+__conda_setup="$('{{ $homebrew_home }}/Caskroom/miniconda/base/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/usr/local/Caskroom/miniconda/base/etc/profile.d/conda.sh" ]; then
-        . "/usr/local/Caskroom/miniconda/base/etc/profile.d/conda.sh"
+    if [ -f "{{ $homebrew_home }}/Caskroom/miniconda/base/etc/profile.d/conda.sh" ]; then
+        . "{{ $homebrew_home }}/Caskroom/miniconda/base/etc/profile.d/conda.sh"
     else
-        export PATH="/usr/local/Caskroom/miniconda/base/bin:$PATH"
+        export PATH="{{ $homebrew_home }}/Caskroom/miniconda/base/bin:$PATH"
     fi
 fi
 unset __conda_setup
