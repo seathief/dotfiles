@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# port listening
+{{ if eq .chezmoi.os "darwin" -}}
+# osx port listening
+# https://stackoverflow.com/questions/4421633/who-is-listening-on-a-given-tcp-port-on-mac-os-x
+listening() {
+    if [ $# -eq 0 ]; then
+        sudo lsof -iTCP -sTCP:LISTEN -n -P
+    elif [ $# -eq 1 ]; then
+        sudo lsof -iTCP -sTCP:LISTEN -n -P | grep -i --color $1
+    else
+        echo "Usage: listening [pattern]"
+    fi
+}
+{{ else if eq .chezmoi.os "linux" -}}
+# linux implementation (using ss)
+listening() {
+    if [ $# -eq 0 ]; then
+        sudo ss -tlpn
+    elif [ $# -eq 1 ]; then
+        sudo ss -tlpn | grep -i --color $1
+    else
+        echo "Usage: listening [pattern]"
+    fi
+}
+# Common ss flags:
+# -t: Show TCP sockets
+# -l: Show listening sockets
+# -p: Show process using socket
+# -n: Do not resolve service names (show port numbers)
+{{ else -}}
+# others
+{{ end -}}
+

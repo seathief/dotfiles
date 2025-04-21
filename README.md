@@ -1,17 +1,16 @@
 # 設定檔位置
 
 - zsh
-    ~/.zshrc
+    - 主設定檔：`~/.zshrc`
+    - 輔助腳本：`~/.zsh/helper.sh`
 
 - git
-    ~/.gitconfig
-    ~/.gitignore_global
+    - 全域設定檔：`~/.gitconfig`
+    - 全域忽略設定：`~/.gitignore_global`
 
 - tmux
-    ~/.tmux.conf
-
-- shell-gpt
-    ~/.config/shell_gpt/.sgptrc
+    - 設定檔：`~/.tmux.conf`
 
 - direnv
-    ~/.config/direnv/direnvrc
+    - 設定檔：`~/.config/direnv/direnvrc`
+

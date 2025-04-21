@@ -1,3 +1,8 @@
+#
+# Z shell Settings
+#
+# start profiling zshrc
+# zmodload zsh/zprof
 {{ $homebrew_home := "" -}}
 {{ if eq .chezmoi.hostname "m1" -}}
 {{ $homebrew_home = "/opt/homebrew" -}}
@@ -6,6 +11,7 @@
 {{ else -}}
 # other operating system
 {{ end -}}
+
 # Load compinit first
 autoload -Uz compinit
 compinit
@@ -14,10 +20,23 @@ compinit
 # ref https://medium.com/@kyomind/linux-dev-setup-2705a89b6f48
 source {{ $homebrew_home }}/opt/zinit/zinit.zsh
 
+
+# 
+# general
+#
+#unsetopt correct_all          # disable auto correction
+setopt extended_glob          # extended globstring support
+#setopt autocd                 # enter directories by name only
+#setopt interactivecomments    # recognize comments
+
+#zstyle ':completion:*' menu select=4                # tab completion menu
+#zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}' # use smart-case completion
+#zstyle ':completion:*' matcher-list 'r:|=*' 'l:|=* r:|=*'  # complete from middle of path
+
 # zsh 套件四天王
 zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
-zinit light zsh-users/zsh-history-substring-search
+#zinit light zsh-users/zsh-history-substring-search
 zinit light zdharma-continuum/fast-syntax-highlighting
 
 # Oh My Zsh 功能
@@ -26,13 +45,25 @@ zinit snippet OMZ::lib/history.zsh
 zinit snippet OMZ::lib/key-bindings.zsh
 zinit snippet OMZ::lib/theme-and-appearance.zsh
 
+# prompt
+zinit ice pick"async.zsh" src"pure.zsh"; zinit light sindresorhus/pure
+# pure prompt
+fpath+=$HOME/.zsh/pure
+
+# fzf history search
+zinit ice lucid wait'0'
+zinit light joshskidmore/zsh-fzf-history-search
+
+# vi mode improvement
+#zinit snippet OMZ::plugins/vi-mode/vi-mode.plugin.zsh
+
+# 其他
+zinit load djui/alias-tips
+
 # key binding
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 bindkey ',' autosuggest-accept
-
-# 其他
-zinit load djui/alias-tips
 
 # history setting
 HISTFILE="$HOME/.zsh_history"
@@ -87,9 +118,8 @@ export PATH="/usr/local/opt/inetutils/libexec/gnubin:$PATH"
 # coreutils
 alias touch="gtouch"
 
-# zoxide
-eval "$(zoxide init zsh)"
-alias j="z"
+# autojump
+[ -f /opt/homebrew/etc/profile.d/autojump.sh ] && . /opt/homebrew/etc/profile.d/autojump.sh
 
 # fd
 ## debian 12
@@ -114,11 +144,8 @@ alias du="ncdu --color dark -rr -x --exclude .git --exclude node_modules"
 ## thefuck
 eval $(thefuck --alias)
 
-# nvm
-## https://yoember.com/nodejs/the-best-way-to-install-node-js-with-yarn/
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# fnm, nvm replacement
+eval "$(fnm env --use-on-cd --shell zsh)"
 
 # mosh 
 mosh-screen () {
@@ -127,18 +154,6 @@ mosh-screen () {
 
 mosh-tmux () {
   mosh "$@" -- tmux new -ADs mosh-session
-}
-
-# osx port listening
-# https://stackoverflow.com/questions/4421633/who-is-listening-on-a-given-tcp-port-on-mac-os-x
-listening() {
-    if [ $# -eq 0 ]; then
-        sudo lsof -iTCP -sTCP:LISTEN -n -P
-    elif [ $# -eq 1 ]; then
-        sudo lsof -iTCP -sTCP:LISTEN -n -P | grep -i --color $1
-    else
-        echo "Usage: listening [pattern]"
-    fi
 }
 
 # merge pdf
@@ -155,7 +170,7 @@ export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
 # starship 
-eval "$(starship init zsh)"
+# eval "$(starship init zsh)"
 
 # doom emacs
 export PATH="$HOME/.emacs.d/bin:$PATH"
@@ -237,7 +252,7 @@ complete -o nospace -C /usr/local/bin/packer packer
 eval "$(direnv hook zsh)"
 
 # OPENAI
-export OPENAI_API_KEY=$(pass show openai)
+export OPENAI_API_KEY=$(pass show openai/api/general)
 
 # Shell-GPT integration ZSH v0.2
 _sgpt_zsh() {
@@ -253,5 +268,10 @@ zle -N _sgpt_zsh
 bindkey ^l _sgpt_zsh
 # Shell-GPT integration ZSH v0.2
 
-# conda refine env
-conda activate main
+# loading shell script
+for script in ~/.zsh/*.sh; do
+  source "$script"
+done
+
+# stop profiling zshrc
+# zprof 
