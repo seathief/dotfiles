@@ -36,7 +36,7 @@ setopt extended_glob          # extended globstring support
 # zsh 套件四天王
 zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
-#zinit light zsh-users/zsh-history-substring-search
+zinit light zsh-users/zsh-history-substring-search
 zinit light zdharma-continuum/fast-syntax-highlighting
 
 # Oh My Zsh 功能
@@ -119,7 +119,7 @@ export PATH="/usr/local/opt/inetutils/libexec/gnubin:$PATH"
 alias touch="gtouch"
 
 # autojump
-[ -f /opt/homebrew/etc/profile.d/autojump.sh ] && . /opt/homebrew/etc/profile.d/autojump.sh
+[ -f {{ $homebrew_home }}/etc/profile.d/autojump.sh ] && . {{ $homebrew_home }}/etc/profile.d/autojump.sh
 
 # fd
 ## debian 12
@@ -200,7 +200,7 @@ export SDKMAN_DIR="/Users/seathief/.sdkman"
 eval "$(/usr/libexec/path_helper)"
 
 ## python
-export PATH="$(brew --prefix)/opt/python@3.12/libexec/bin:$PATH"
+# export PATH="$(brew --prefix)/opt/python@3.12/libexec/bin:$PATH"
 
 ## golang
 export GOROOT=$(brew --prefix go)/libexec
