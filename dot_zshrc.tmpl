@@ -3,14 +3,8 @@
 #
 # start profiling zshrc
 # zmodload zsh/zprof
-{{ $homebrew_home := "" -}}
-{{ if eq .chezmoi.hostname "m1" -}}
-{{ $homebrew_home = "/opt/homebrew" -}}
-{{ else if eq .chezmoi.hostname "mbpr13" -}}
-{{ $homebrew_home = "/usr/local" -}}
-{{ else -}}
-# other operating system
-{{ end -}}
+
+export HOMEBREW_HOME="$(brew --prefix)"
 
 # Load compinit first
 autoload -Uz compinit
@@ -18,8 +12,7 @@ compinit
 
 # zinit
 # ref https://medium.com/@kyomind/linux-dev-setup-2705a89b6f48
-source {{ $homebrew_home }}/opt/zinit/zinit.zsh
-
+source $HOMEBREW_HOME/opt/zinit/zinit.zsh
 
 # 
 # general
@@ -44,11 +37,6 @@ zinit snippet OMZ::lib/completion.zsh
 zinit snippet OMZ::lib/history.zsh
 zinit snippet OMZ::lib/key-bindings.zsh
 zinit snippet OMZ::lib/theme-and-appearance.zsh
-
-# prompt
-zinit ice pick"async.zsh" src"pure.zsh"; zinit light sindresorhus/pure
-# pure prompt
-fpath+=$HOME/.zsh/pure
 
 # fzf history search
 zinit ice lucid wait'0'
@@ -97,19 +85,19 @@ alias lla='eza --long --all --color auto --icons --sort=type'
 alias lr='eza -lR'
 
 # gnu find(findutils) as find
-export PATH="{{ $homebrew_home }}/opt/findutils/libexec/gnubin:$PATH"
+export PATH="$HOMEBREW_HOME/opt/findutils/libexec/gnubin:$PATH"
 
 # gnu-tar as tar
-export PATH="{{ $homebrew_home }}/opt/gnu-tar/libexec/gnubin:$PATH" 
+export PATH="$HOMEBREW_HOME/opt/gnu-tar/libexec/gnubin:$PATH" 
 
 # gnu-sed as sed
-export PATH="{{ $homebrew_home }}/opt/gnu-sed/libexec/gnubin:$PATH"
+export PATH="$HOMEBREW_HOME/opt/gnu-sed/libexec/gnubin:$PATH"
 
 # gnu-grep as grep
-export PATH="{{ $homebrew_home }}/opt/grep/libexec/gnubin:$PATH"
+export PATH="$HOMEBREW_HOME/opt/grep/libexec/gnubin:$PATH"
 
 # gawk
-export PATH="{{ $homebrew_home }}/opt/gawk/libexec/gnubin:$PATH"
+export PATH="$HOMEBREW_HOME/opt/gawk/libexec/gnubin:$PATH"
 alias gawk="awk"
 
 # inetutils: ftp/rcp/rlogin/rsh/telnet?
@@ -119,7 +107,7 @@ export PATH="/usr/local/opt/inetutils/libexec/gnubin:$PATH"
 alias touch="gtouch"
 
 # autojump
-[ -f {{ $homebrew_home }}/etc/profile.d/autojump.sh ] && . {{ $homebrew_home }}/etc/profile.d/autojump.sh
+[ -f $HOMEBREW_HOME/etc/profile.d/autojump.sh ] && . $HOMEBREW_HOME/etc/profile.d/autojump.sh
 
 # fd
 ## debian 12
@@ -230,14 +218,14 @@ export EDITOR="code --wait"
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('{{ $homebrew_home }}/Caskroom/miniconda/base/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+__conda_setup="$('$HOMEBREW_HOME/Caskroom/miniconda/base/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "{{ $homebrew_home }}/Caskroom/miniconda/base/etc/profile.d/conda.sh" ]; then
-        . "{{ $homebrew_home }}/Caskroom/miniconda/base/etc/profile.d/conda.sh"
+    if [ -f "$HOMEBREW_HOME/Caskroom/miniconda/base/etc/profile.d/conda.sh" ]; then
+        . "$HOMEBREW_HOME/Caskroom/miniconda/base/etc/profile.d/conda.sh"
     else
-        export PATH="{{ $homebrew_home }}/Caskroom/miniconda/base/bin:$PATH"
+        export PATH="$HOMEBREW_HOME/Caskroom/miniconda/base/bin:$PATH"
     fi
 fi
 unset __conda_setup
@@ -253,6 +241,13 @@ complete -o nospace -C /usr/local/bin/packer packer
 
 # direnv
 eval "$(direnv hook zsh)"
+
+# oh-my-posh
+{{ if eq .chezmoi.os "darwin" -}}
+eval "$(oh-my-posh init zsh --config $(brew --prefix oh-my-posh)/themes/gruvbox.omp.json)"
+{{ else -}}
+# other operation system
+{{ end -}}
 
 # OPENAI
 export OPENAI_API_KEY=$(pass show openai/api/general)
