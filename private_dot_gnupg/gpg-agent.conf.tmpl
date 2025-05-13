@@ -1,0 +1,8 @@
+# Cache GPG passphrase longer:
+default-cache-ttl 34560000  # 10 hours
+max-cache-ttl 34560000      # 10 hours
+{{ if eq .chezmoi.os "darwin" -}}
+pinentry-program $(brew --prefix)/bin/pinentry-tty # Use a CLI pinentry
+{{ else -}}
+# other operation system
+{{ end -}}

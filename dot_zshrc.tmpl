@@ -75,7 +75,7 @@ zshaddhistory() {
 }
 
 ## install an homebrew formula without updating homebrew itself
-export HOMEBREW_NO_AUTO_UPDATE=
+export HOMEBREW_AUTO_UPDATE_SECS=43200
 
 # eza: a ls replacement
 alias ls='eza --grid --color auto --icons --sort=type'
@@ -148,6 +148,19 @@ mosh-tmux () {
 cpdf () { 
     gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile="$1" "${@:2}"
 }
+
+# gpg
+## GPG agent setup  
+export GPG_TTY=$(tty)                                  
+gpg-connect-agent updatestartuptty /bye >/dev/null      
+
+## SSH via GPG agent  
+export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)  
+
+## Start gpg-agent if not running  
+if ! pgrep -u "$USER" gpg-agent >/dev/null; then  
+  gpg-agent --daemon --enable-ssh-support >/dev/null  
+fi  
 
 # uuid depends on python
 alias uuid="python -c 'import sys,uuid; sys.stdout.write(uuid.uuid4().hex)' | pbcopy && pbpaste && echo"
@@ -247,8 +260,7 @@ eval "$(direnv hook zsh)"
 eval "$(oh-my-posh init zsh --config $(brew --prefix oh-my-posh)/themes/gruvbox.omp.json)"
 {{ else -}}
 # other operation system
-{{ end -}}
-
+{{ end }}
 # OPENAI
 export OPENAI_API_KEY=$(pass show openai/api/general)
 
