@@ -229,20 +229,37 @@ export PATH="$HOME/.codeium/windsurf/bin:$PATH"
 # default editor
 export EDITOR="code --wait"
 
+{{ if eq .chezmoi.os "darwin" -}}
+  {{ if eq .chezmoi.arch "amd64" -}}
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('$HOMEBREW_HOME/Caskroom/miniconda/base/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+__conda_setup="$('/usr/local/Caskroom/miniconda/base/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "$HOMEBREW_HOME/Caskroom/miniconda/base/etc/profile.d/conda.sh" ]; then
-        . "$HOMEBREW_HOME/Caskroom/miniconda/base/etc/profile.d/conda.sh"
+    if [ -f "/usr/local/Caskroom/miniconda/base/etc/profile.d/conda.sh" ]; then
+        . "/usr/local/Caskroom/miniconda/base/etc/profile.d/conda.sh"
     else
-        export PATH="$HOMEBREW_HOME/Caskroom/miniconda/base/bin:$PATH"
+        export PATH="/usr/local/Caskroom/miniconda/base/bin:$PATH"
     fi
 fi
 unset __conda_setup
 # <<< conda initialize <<<
+  {{ else if eq .chezmoi.arch "arm64" -}}
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/opt/homebrew/Caskroom/miniconda/base/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/opt/homebrew/Caskroom/miniconda/base/etc/profile.d/conda.sh" ]; then
+        . "/opt/homebrew/Caskroom/miniconda/base/etc/profile.d/conda.sh"
+    else
+        export PATH="/opt/homebrew/Caskroom/miniconda/base/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+  {{ end }}
+{{ end -}}
 
 # packer
 autoload -U +X bashcompinit && bashcompinit
@@ -275,7 +292,7 @@ if [[ -n "$BUFFER" ]]; then
 fi
 }
 zle -N _sgpt_zsh
-bindkey ^l _sgpt_zsh
+bindkey '^l' _sgpt_zsh
 # Shell-GPT integration ZSH v0.2
 
 # loading shell script
