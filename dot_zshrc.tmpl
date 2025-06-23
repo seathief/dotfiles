@@ -27,8 +27,8 @@ setopt extended_glob          # extended globstring support
 #zstyle ':completion:*' matcher-list 'r:|=*' 'l:|=* r:|=*'  # complete from middle of path
 
 # zsh 套件四天王
-zinit light zsh-users/zsh-completions
-zinit light zsh-users/zsh-autosuggestions
+## autocomplete因為 Amazon Q 關閉
+## zinit light zsh-users/zsh-autosuggestions
 zinit light zsh-users/zsh-history-substring-search
 zinit light zdharma-continuum/fast-syntax-highlighting
 
@@ -300,10 +300,13 @@ zle -N _sgpt_zsh
 bindkey '^l' _sgpt_zsh
 # Shell-GPT integration ZSH v0.2
 
+# Amazon Q post block. Keep at the bottom of this file.
+[[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh"
+
 # loading shell script
 for script in ~/.zsh/*.sh; do
   source "$script"
 done
 
 # stop profiling zshrc
-# zprof 
+# zprof
