@@ -193,8 +193,8 @@ rga-fzf() {
 }
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="/Users/seathief/.sdkman"
-[[ -s "/Users/seathief/.sdkman/bin/sdkman-init.sh" ]] && source "/Users/seathief/.sdkman/bin/sdkman-init.sh"
+export SDKMAN_DIR=$(brew --prefix sdkman-cli)/libexec
+[[ -s "${SDKMAN_DIR}/bin/sdkman-init.sh" ]] && source "${SDKMAN_DIR}/bin/sdkman-init.sh"
 
 
 # mactex
@@ -282,9 +282,6 @@ eval "$(oh-my-posh init zsh --config $(brew --prefix oh-my-posh)/themes/gruvbox.
 {{ end }}
 # OPENAI
 export OPENAI_API_KEY=$(pass show openai/api/general)
-
-# claude code
-alias claude="/Users/seathief/.claude/local/claude"
 
 # Shell-GPT integration ZSH v0.2
 _sgpt_zsh() {
