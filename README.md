@@ -16,3 +16,9 @@
 
 - gpg-agent
   - 設定檔:`private_dot_gnupg/gpg-agent.conf.tmpl`
+
+- claude code
+  - 設定檔：`~/.claude/CLAUDE.md`
+
+- gemini cli
+  - 設定檔：`~/.gemini/GEMINI.md`
