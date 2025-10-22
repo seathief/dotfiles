@@ -1,23 +1,40 @@
 layout_uv() {
     local python_version=${1:-}
-    local venv_path=".venv"
-    
-    if [[ -d "$venv_path" ]]; then
-        VIRTUAL_ENV="$(pwd)/$venv_path"
+    if [[ -d ".venv" ]]; then
+        VIRTUAL_ENV="$(pwd)/.venv"
     fi
-
     if [[ -z $VIRTUAL_ENV || ! -d $VIRTUAL_ENV ]]; then
         if [[ -z "$python_version" ]]; then
             log_status "No virtual environment exists. Executing \`uv venv\` to create one."
             uv venv
         else
-            log_status "No virtual environment exists. Executing \`uv venv --python=$python_version\` to create one."
+            log_status "Creating venv with Python $python_version"
             uv venv --python="$python_version"
         fi
-        VIRTUAL_ENV="$(pwd)/$venv_path"
+        VIRTUAL_ENV="$(pwd)/.venv"
     fi
-
-    PATH_add "$VIRTUAL_ENV/bin"
-    export UV_ACTIVE=1  # or VENV_ACTIVE=1
+    # Cross-platform PATH
+    if [ -d ".venv/bin" ]; then
+        PATH_add .venv/bin
+    elif [ -d ".venv/Scripts" ]; then
+        PATH_add .venv/Scripts
+    fi
+    export UV_ACTIVE=1
     export VIRTUAL_ENV
+}
+
+# ref: https://gist.github.com/zkfyq/eaadf7a8d88aa8632bde8688de90d400
+# iterate on pairs of [candidate] [version] and invoke `sdk use` on each of them
+# use sdk java 21.0.8-jbr maven 3.5.4
+use_sdk() {
+  export SDKMAN_DIR=$(brew --prefix sdkman-cli)/libexec
+  [[ -s "${SDKMAN_DIR}/bin/sdkman-init.sh" ]] && source "${SDKMAN_DIR}/bin/sdkman-init.sh"
+
+  while (( "$#" >= 2 )); do
+    local candidate=$1
+    local candidate_version=$2
+    sdk use $candidate $candidate_version
+
+    shift 2
+  done
 }

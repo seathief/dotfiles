@@ -5,7 +5,7 @@
 	excludesFile = ~/.gitignore_global
 	pager = delta
 [commit]
-	template = /Users/seathief/.stCommitMsg
+	template = ~/.stCommitMsg
 [init]
 	defaultBranch = main
 [alias]
