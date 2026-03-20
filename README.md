@@ -15,9 +15,12 @@
   - 設定檔：`~/.config/direnv/direnvrc`
 
 - gpg-agent
-  - 設定檔:`private_dot_gnupg/gpg-agent.conf.tmpl`
+  - 設定檔：`~/.gnupg/gpg-agent.conf`
 
-- claude code
+- Homebrew
+  - 設定檔：`~/.homebrew/brew.env`
+
+- Claude Code
   - 設定檔：`~/.claude/CLAUDE.md`
 
 - gemini cli

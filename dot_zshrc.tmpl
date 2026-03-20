@@ -4,17 +4,19 @@
 # start profiling zshrc
 # zmodload zsh/zprof
 
-export HOMEBREW_HOME="$(brew --prefix)"
-
 # Load compinit first
 autoload -Uz compinit
 compinit
 
 # zinit
 # ref https://medium.com/@kyomind/linux-dev-setup-2705a89b6f48
-source $HOMEBREW_HOME/opt/zinit/zinit.zsh
+source /opt/homebrew/opt/zinit/zinit.zsh
 
-# 
+# Kiro CLI pre block. Keep at the top of this file.
+[[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.pre.zsh"
+
+
+#
 # general
 #
 #unsetopt correct_all          # disable auto correction
@@ -51,7 +53,7 @@ zinit load djui/alias-tips
 # key binding
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
-bindkey ',' autosuggest-accept
+# bindkey ',' autosuggest-accept
 
 # history setting
 HISTFILE="$HOME/.zsh_history"
@@ -67,7 +69,7 @@ setopt HIST_FIND_NO_DUPS
 setopt HIST_SAVE_NO_DUPS
 setopt HIST_BEEP
 
-## zsh history ignore pattern 
+## zsh history ignore pattern
 zshaddhistory() {
   # Match 'git commit' or the alias 'git ci'
   [[ $1 =~ '^git (commit|ci)' ]] && return 1
@@ -85,29 +87,45 @@ alias lla='eza --long --all --color auto --icons --sort=type'
 alias lr='eza -lR'
 
 # gnu find(findutils) as find
-export PATH="$HOMEBREW_HOME/opt/findutils/libexec/gnubin:$PATH"
+export PATH="/opt/homebrew/opt/findutils/libexec/gnubin:$PATH"
 
 # gnu-tar as tar
-export PATH="$HOMEBREW_HOME/opt/gnu-tar/libexec/gnubin:$PATH" 
+export PATH="/opt/homebrew/opt/gnu-tar/libexec/gnubin:$PATH"
 
 # gnu-sed as sed
-export PATH="$HOMEBREW_HOME/opt/gnu-sed/libexec/gnubin:$PATH"
+export PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH"
 
 # gnu-grep as grep
-export PATH="$HOMEBREW_HOME/opt/grep/libexec/gnubin:$PATH"
+export PATH="/opt/homebrew/opt/grep/libexec/gnubin:$PATH"
 
 # gawk
-export PATH="$HOMEBREW_HOME/opt/gawk/libexec/gnubin:$PATH"
-alias gawk="awk"
+export PATH="/opt/homebrew/opt/gawk/libexec/gnubin:$PATH"
 
 # inetutils: ftp/rcp/rlogin/rsh/telnet?
-export PATH="/usr/local/opt/inetutils/libexec/gnubin:$PATH"
+export PATH="/opt/homebrew/opt/inetutils/libexec/gnubin:$PATH"
 
 # coreutils
 alias touch="gtouch"
 
-# autojump
-[ -f $HOMEBREW_HOME/etc/profile.d/autojump.sh ] && . $HOMEBREW_HOME/etc/profile.d/autojump.sh
+# zoxide
+eval "$(zoxide init zsh)"
+
+function zoxide_fzf() {
+    local orig_buffer=$LBUFFER
+    local selection
+    selection=$(zoxide query --list | fzf --height 40% --reverse --border) || {
+        LBUFFER=$orig_buffer
+        zle redisplay
+        return 0
+    }
+
+    if [[ -n "$selection" ]]; then
+        LBUFFER+="$selection"
+        zle redisplay
+    fi
+}
+zle -N zoxide_fzf
+bindkey '^o' zoxide_fzf
 
 # fd
 ## debian 12
@@ -118,7 +136,7 @@ alias touch="gtouch"
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-## download binary to /usr/local/bin, debian 12 
+## download binary to /usr/local/bin, debian 12
 # eval "$(fzf --zsh)"
 # alias preview="fzf --preview 'bat --color \"always\" {}'"
 
@@ -135,7 +153,7 @@ eval $(thefuck --alias)
 # fnm, nvm replacement
 eval "$(fnm env --use-on-cd --shell zsh)"
 
-# mosh 
+# mosh
 mosh-screen () {
   mosh "$@" -- screen -dR mosh-session
 }
@@ -145,22 +163,22 @@ mosh-tmux () {
 }
 
 # merge pdf
-cpdf () { 
+cpdf () {
     gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile="$1" "${@:2}"
 }
 
 # gpg
-## GPG agent setup  
-export GPG_TTY=$(tty)                                  
-gpg-connect-agent updatestartuptty /bye >/dev/null      
+## GPG agent setup
+# export GPG_TTY=$(tty)
+# gpg-connect-agent updatestartuptty /bye >/dev/null
 
-## SSH via GPG agent  
-export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)  
+## SSH via GPG agent
+# export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 
-## Start gpg-agent if not running  
-if ! pgrep -u "$USER" gpg-agent >/dev/null; then  
-  gpg-agent --daemon --enable-ssh-support >/dev/null  
-fi  
+## Start gpg-agent if not running
+# if ! pgrep -u "$USER" gpg-agent >/dev/null; then
+#   gpg-agent --daemon --enable-ssh-support >/dev/null
+# fi
 
 # uuid depends on python
 alias uuid="python -c 'import sys,uuid; sys.stdout.write(uuid.uuid4().hex)' | pbcopy && pbpaste && echo"
@@ -170,7 +188,7 @@ alias uuid="python -c 'import sys,uuid; sys.stdout.write(uuid.uuid4().hex)' | pb
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
-# starship 
+# starship
 # eval "$(starship init zsh)"
 
 # doom emacs
@@ -215,7 +233,7 @@ if command -v ngrok &>/dev/null; then
 fi
 
 ## PostgreSQL
-export PATH="/usr/local/opt/postgresql@16/bin:$PATH"
+# export PATH="/usr/local/opt/postgresql@16/bin:$PATH"
 
 # Added by Windsurf
 export PATH="$HOME/.codeium/windsurf/bin:$PATH"
@@ -224,25 +242,15 @@ export PATH="$HOME/.codeium/windsurf/bin:$PATH"
 [[ "$TERM_PROGRAM" == "vscode" ]] && . "$(code --locate-shell-integration-path zsh)"
 
 # default editor
-export EDITOR="code --wait"
+export EDITOR="zed --wait"
 
-{{ if eq .chezmoi.os "darwin" -}}
-  {{ if eq .chezmoi.arch "amd64" -}}
+# claude code LSP
+export ENABLE_LSP_TOOL=1
+
+# claude-mem
+alias claude-mem='bun "/Users/seathief/.claude/plugins/marketplaces/thedotmack/plugin/scripts/worker-service.cjs"'
+
 # >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/usr/local/Caskroom/miniconda/base/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/usr/local/Caskroom/miniconda/base/etc/profile.d/conda.sh" ]; then
-        . "/usr/local/Caskroom/miniconda/base/etc/profile.d/conda.sh"
-    else
-        export PATH="/usr/local/Caskroom/miniconda/base/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-  {{ else if eq .chezmoi.arch "arm64" -}}
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('/opt/homebrew/Caskroom/miniconda/base/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
@@ -255,12 +263,11 @@ else
     fi
 fi
 unset __conda_setup
-  {{ end }}
-{{ end -}}
+# <<< conda initialize <<<
 
 # packer
-autoload -U +X bashcompinit && bashcompinit
-complete -o nospace -C /usr/local/bin/packer packer
+# autoload -U +X bashcompinit && bashcompinit
+# complete -o nospace -C /usr/local/bin/packer packer
 
 # terraform
 #autoload -U +X bashcompinit && bashcompinit
@@ -270,20 +277,47 @@ complete -o nospace -C /usr/local/bin/packer packer
 eval "$(direnv hook zsh)"
 
 # oh-my-posh
-{{ if eq .chezmoi.os "darwin" -}}
-eval "$(oh-my-posh init zsh --config $(brew --prefix oh-my-posh)/themes/gruvbox.omp.json)"
-{{ else -}}
-# other operation system
-{{ end }}
+eval "$(oh-my-posh init zsh --config $(brew --prefix oh-my-posh)/themes/powerlevel10k_modern.omp.json)"
+
 # OPENAI
-export OPENAI_API_KEY=$(pass show openai/api/general)
+# export OPENAI_API_KEY=$(pass show openai/api/general)
 
 # opencode
 export PATH=/Users/seathief/.opencode/bin:$PATH
 
+# codex
+# alias codex='CODEX_HOME="$PWD/.codex" codex'
+
+
+# Added by Antigravity
+export PATH="/Users/seathief/.antigravity/antigravity/bin:$PATH"
+
+# bun completions
+[ -s "/Users/seathief/.bun/_bun" ] && source "/Users/seathief/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+# rustup
+export PATH="/opt/homebrew/opt/rustup/bin:$PATH"
+
+# libxml2/xmllint
+export PATH="/opt/homebrew/opt/libxml2/bin:$PATH"
+
+# gcloud
+export PATH=/opt/homebrew/share/google-cloud-sdk/bin:"$PATH"
+
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR=$(brew --prefix sdkman-cli)/libexec
 [[ -s "${SDKMAN_DIR}/bin/sdkman-init.sh" ]] && source "${SDKMAN_DIR}/bin/sdkman-init.sh"
+
+# Kiro CLI post block. Keep at the bottom of this file.
+[[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh"
+
+
+# homebrew path
+export PATH="/opt/homebrew/bin:$PATH"
 
 # loading shell script
 for script in ~/.zsh/*.sh; do
