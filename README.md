@@ -25,3 +25,10 @@
 
 - gemini cli
   - 設定檔：`~/.gemini/GEMINI.md`
+
+- githooks
+  - `~/.githooks/post-checkout`
+  - `~/.githooks/post-merge`
+
+- bin
+  - `~/bin/worktree-sync-env.sh`

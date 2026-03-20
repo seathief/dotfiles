@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# --- Global hooks ---
+"$HOME/bin/worktree-sync-env.sh"
+
+# --- Per-repo hooks fallback ---
+# core.hooksPath overrides per-repo hooks, so we chain them manually
+# Guard against recursion
+if [[ -z "${_GLOBAL_HOOK_RUNNING:-}" ]]; then
+  export _GLOBAL_HOOK_RUNNING=1
+  repo_root="$(git rev-parse --show-toplevel)"
+  repo_hook="$repo_root/.githooks/post-checkout"
+  if [[ -x "$repo_hook" ]]; then
+    "$repo_hook" "$@"
+  fi
+fi
