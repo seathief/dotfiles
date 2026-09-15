@@ -2,12 +2,15 @@
 	name = Ron Chen
 	email = seathief@gmail.com
 [core]
-	excludesFile = ~/.gitignore_global
+	excludesfile = /Users/seathief/.gitignore_global
 	pager = delta
+	quotepath = false
+	hooksPath = /Users/seathief/.githooks
 [commit]
 	template = ~/.stCommitMsg
 [init]
 	defaultBranch = main
+	templateDir = /Users/seathief/.git-templates/git-secrets
 [alias]
 	lg = log --color --graph --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
 	co = checkout
@@ -21,15 +24,24 @@
 	dark = true      # or light = true, or omit for auto-detection
 	side-by-side = true
 
+[pager]
+    # Use a pager if the difftool output is larger than one screenful,
+    # consistent with the behaviour of `git diff`.
+    difftool = true
+
 [diff]
-	tool = delta
+	tool = difftastic
+
+[difftool]
+	prompt = false
 [difftool "bcomp"]
 	cmd = \"bcomp\" \"$LOCAL\" \"$REMOTE\"
 [difftool "sourcetree"]
 	cmd = /usr/local/bin/bcomp \"$LOCAL\" \"$REMOTE\"
 	path = -ro
-[difftool]
-	prompt = false
+[difftool "difftastic"]
+    # See `man git-difftool` for a description of MERGED, LOCAL and REMOTE.
+    cmd = difft "$MERGED" "$LOCAL" "abcdef1" "100644" "$REMOTE" "abcdef2" "100644"
 
 [merge]
 	tool = delta
@@ -40,4 +52,19 @@
 [mergetool "sourcetree"]
 	cmd = /usr/local/bin/bcomp \"$LOCAL\" \"$REMOTE\" \"$BASE\" \"$MERGED\"
 	trustExitCode = true
-
+[i18n]
+	commitencoding = utf-8
+	logoutputencoding = utf-8
+[secrets]
+	providers = git secrets --aws-provider
+	patterns = (A3T[A-Z0-9]|AKIA|AGPA|AIDA|AROA|AIPA|ANPA|ANVA|ASIA)[A-Z0-9]{16}
+	patterns = (\"|')?(AWS|aws|Aws)?_?(SECRET|secret|Secret)?_?(ACCESS|access|Access)?_?(KEY|key|Key)(\"|')?\\s*(:|=>|=)\\s*(\"|')?[A-Za-z0-9/\\+=]{40}(\"|')?
+	patterns = (\"|')?(AWS|aws|Aws)?_?(ACCOUNT|account|Account)_?(ID|id|Id)?(\"|')?\\s*(:|=>|=)\\s*(\"|')?[0-9]{4}\\-?[0-9]{4}\\-?[0-9]{4}(\"|')?
+	allowed = AKIAIOSFODNN7EXAMPLE
+	allowed = wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+[credential "https://github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential

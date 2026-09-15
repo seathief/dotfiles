@@ -3,6 +3,8 @@
 - zsh
   - 主設定檔：`~/.zshrc`
   - 輔助腳本：`~/.zsh/helper.sh`
+  - Pi profile：`~/.zsh/pi-profiles.sh`
+  - Git worktree：`~/.zsh/git-worktree.sh`
 
 - git
   - 全域設定檔：`~/.gitconfig`
@@ -15,20 +17,10 @@
   - 設定檔：`~/.config/direnv/direnvrc`
 
 - gpg-agent
-  - 設定檔：`~/.gnupg/gpg-agent.conf`
+  - 設定檔:`private_dot_gnupg/gpg-agent.conf.tmpl`
 
-- Homebrew
-  - 設定檔：`~/.homebrew/brew.env`
-
-- Claude Code
+- claude code
   - 設定檔：`~/.claude/CLAUDE.md`
 
 - gemini cli
   - 設定檔：`~/.gemini/GEMINI.md`
-
-- githooks
-  - `~/.githooks/post-checkout`
-  - `~/.githooks/post-merge`
-
-- bin
-  - `~/bin/worktree-sync-env.sh`

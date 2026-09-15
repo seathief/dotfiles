@@ -4,17 +4,38 @@
 # start profiling zshrc
 # zmodload zsh/zprof
 
-# Load compinit first
+# Keep PATH entries unique for interactive shells, including non-login shells.
+typeset -U path PATH
+path=("$HOME/bin" $path)
+
+# zinit(homebrew installation)
+source /opt/homebrew/opt/zinit/zinit.zsh
+
+# Starship prompt
+zinit ice as"command" from"gh-r" \
+          atclone"./starship init zsh > init.zsh; ./starship completions zsh > _starship" \
+          atpull"%atclone" src"init.zsh"
+zinit light starship/starship
+export STARSHIP_LOG=error
+
+#zinit ice wait lucid
+zinit light zdharma-continuum/fast-syntax-highlighting
+
+# Completion definitions
+zinit light zsh-users/zsh-completions
 autoload -Uz compinit
 compinit
 
-# zinit
-# ref https://medium.com/@kyomind/linux-dev-setup-2705a89b6f48
-source /opt/homebrew/opt/zinit/zinit.zsh
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
-# Kiro CLI pre block. Keep at the top of this file.
-[[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.pre.zsh"
 
+# Suggestions
+zinit ice wait lucid
+zinit light zsh-users/zsh-autosuggestions
+
+zinit ice wait lucid
+zinit light zsh-users/zsh-history-substring-search
 
 #
 # general
@@ -28,20 +49,12 @@ setopt extended_glob          # extended globstring support
 #zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}' # use smart-case completion
 #zstyle ':completion:*' matcher-list 'r:|=*' 'l:|=* r:|=*'  # complete from middle of path
 
-# zsh 套件四天王
-## autocomplete因為 Amazon Q 關閉
-## zinit light zsh-users/zsh-autosuggestions
-zinit light zsh-users/zsh-history-substring-search
-zinit light zdharma-continuum/fast-syntax-highlighting
-
 # Oh My Zsh 功能
-zinit snippet OMZ::lib/completion.zsh
 zinit snippet OMZ::lib/history.zsh
 zinit snippet OMZ::lib/key-bindings.zsh
-zinit snippet OMZ::lib/theme-and-appearance.zsh
 
 # fzf history search
-zinit ice lucid wait'0'
+zinit ice wait lucid
 zinit light joshskidmore/zsh-fzf-history-search
 
 # vi mode improvement
@@ -49,11 +62,6 @@ zinit light joshskidmore/zsh-fzf-history-search
 
 # 其他
 zinit load djui/alias-tips
-
-# key binding
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
-# bindkey ',' autosuggest-accept
 
 # history setting
 HISTFILE="$HOME/.zsh_history"
@@ -81,10 +89,16 @@ export HOMEBREW_AUTO_UPDATE_SECS=43200
 
 # eza: a ls replacement
 alias ls='eza --grid --color auto --icons --sort=type'
+
+# replace nvim with original vim
+alias vim='nvim'
 alias ll='eza --long --color always --icons --sort=type'
 alias la='eza --grid --all --color auto --icons --sort=type'
 alias lla='eza --long --all --color auto --icons --sort=type'
 alias lr='eza -lR'
+
+# mise
+eval "$(mise activate zsh)"
 
 # gnu find(findutils) as find
 export PATH="/opt/homebrew/opt/findutils/libexec/gnubin:$PATH"
@@ -103,9 +117,6 @@ export PATH="/opt/homebrew/opt/gawk/libexec/gnubin:$PATH"
 
 # inetutils: ftp/rcp/rlogin/rsh/telnet?
 export PATH="/opt/homebrew/opt/inetutils/libexec/gnubin:$PATH"
-
-# zoxide
-eval "$(zoxide init zsh)"
 
 function zoxide_fzf() {
     local orig_buffer=$LBUFFER
@@ -147,9 +158,6 @@ alias du="ncdu --color dark -rr -x --exclude .git --exclude node_modules"
 ## thefuck
 eval $(thefuck --alias)
 
-# fnm, nvm replacement
-eval "$(fnm env --use-on-cd --shell zsh)"
-
 # pnpm
 export PNPM_HOME="$HOME/Library/pnpm"
 export PATH="$PNPM_HOME:$PATH"
@@ -189,9 +197,6 @@ alias uuid="python -c 'import sys,uuid; sys.stdout.write(uuid.uuid4().hex)' | pb
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
-# starship
-# eval "$(starship init zsh)"
-
 # doom emacs
 export PATH="$HOME/.emacs.d/bin:$PATH"
 
@@ -210,9 +215,6 @@ rga-fzf() {
 	# xdg-open "$file"
 	open "$file"
 }
-
-# mactex
-eval "$(/usr/libexec/path_helper)"
 
 # perl
 ## curl -L https://cpanmin.us | perl - App::cpanminus
@@ -243,65 +245,14 @@ export PATH="$HOME/.codeium/windsurf/bin:$PATH"
 [[ "$TERM_PROGRAM" == "vscode" ]] && . "$(code --locate-shell-integration-path zsh)"
 
 # default editor
-export EDITOR="zed --wait"
+export EDITOR="nvim"
 
 # claude code LSP
 export ENABLE_LSP_TOOL=1
 
-# claude-mem
-alias claude-mem='bun "/Users/seathief/.claude/plugins/marketplaces/thedotmack/plugin/scripts/worker-service.cjs"'
-
-# Add any commands which depend on conda here
-lazy_conda_aliases=('python' 'conda')
-
-load_conda() {
-  for lazy_conda_alias in $lazy_conda_aliases
-  do
-    unalias $lazy_conda_alias
-  done
-
-  __conda_prefix="/opt/homebrew/Caskroom/miniconda/base" # Set your conda Location
-
-  # >>> conda initialize >>>
-  __conda_setup="$("$__conda_prefix/bin/conda" 'shell.bash' 'hook' 2> /dev/null)"
-  if [ $? -eq 0 ]; then
-      eval "$__conda_setup"
-  else
-      if [ -f "$__conda_prefix/etc/profile.d/conda.sh" ]; then
-# . "$__conda_prefix/etc/profile.d/conda.sh"  # commented out by conda initialize
-      else
-          export PATH="$__conda_prefix/bin:$PATH"
-      fi
-  fi
-  unset __conda_setup
-  # <<< conda initialize <<<
-
-  unset __conda_prefix
-  unfunction load_conda
-}
-
-for lazy_conda_alias in $lazy_conda_aliases
-do
-  alias $lazy_conda_alias="load_conda && $lazy_conda_alias"
-done
-
-
-
-
-
-# packer
-# autoload -U +X bashcompinit && bashcompinit
-# complete -o nospace -C /usr/local/bin/packer packer
-
 # terraform
 #autoload -U +X bashcompinit && bashcompinit
 #complete -o nospace -C /usr/local/bin/terraform terraform
-
-# direnvx
-eval "$(direnv hook zsh)"
-
-# oh-my-posh
-eval "$(oh-my-posh init zsh --config $(brew --prefix oh-my-posh)/themes/powerlevel10k_modern.omp.json)"
 
 # OPENAI
 # export OPENAI_API_KEY=$(pass show openai/api/general)
@@ -312,16 +263,8 @@ export PATH=/Users/seathief/.opencode/bin:$PATH
 # codex
 # alias codex='CODEX_HOME="$PWD/.codex" codex'
 
-
-# Added by Antigravity
-export PATH="/Users/seathief/.antigravity/antigravity/bin:$PATH"
-
-# bun completions
-[ -s "/Users/seathief/.bun/_bun" ] && source "/Users/seathief/.bun/_bun"
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
+# bun path
+export PATH="/Users/seathief/.bun/bin:$PATH"
 
 # rustup
 export PATH="/opt/homebrew/opt/rustup/bin:$PATH"
@@ -332,14 +275,6 @@ export PATH="/opt/homebrew/opt/libxml2/bin:$PATH"
 # gcloud
 export PATH=/opt/homebrew/share/google-cloud-sdk/bin:"$PATH"
 
-#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR=$(brew --prefix sdkman-cli)/libexec
-[[ -s "${SDKMAN_DIR}/bin/sdkman-init.sh" ]] && source "${SDKMAN_DIR}/bin/sdkman-init.sh"
-
-# Kiro CLI post block. Keep at the bottom of this file.
-[[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh"
-
-
 # homebrew path
 export PATH="/opt/homebrew/bin:$PATH"
 
@@ -347,6 +282,13 @@ export PATH="/opt/homebrew/bin:$PATH"
 for script in ~/.zsh/*.sh; do
   source "$script"
 done
+
+# Added by Antigravity CLI installer
+export PATH="/Users/seathief/.local/bin:$PATH"
+
+# zoxide
+# Keep this after the final compinit so zoxide's compdef registration is not reset.
+eval "$(zoxide init zsh)"
 
 # stop profiling zshrc
 # zprof

@@ -38,3 +38,11 @@ use_sdk() {
     shift 2
   done
 }
+
+dotenv_if_exists() {
+  local dotenv_file="${1:-.env}"
+  if [[ -f "${dotenv_file}" ]]; then
+    # Use direnv's dotenv helper to parse KEY=VALUE entries
+    dotenv "${dotenv_file}"
+  fi
+}

@@ -11,3 +11,4 @@
 
 # sdkman
 .sdkmanrc
+**/.claude/settings.local.json
