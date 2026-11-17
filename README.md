@@ -3,8 +3,9 @@
 - zsh
   - 主設定檔：`~/.zshrc`
   - 輔助腳本：`~/.zsh/helper.sh`
-  - Pi profile：`~/.zsh/pi-profiles.sh`
-  - `pisurvey` 使用 survey profile，並以 `PI_CODING_AGENT_SESSION_DIR` 指定共用工作階段目錄 `~/.pi/sessions`
+  - Pi profiles：`~/.zsh/pi-profiles.sh`
+  - `pisurvey` 使用 survey profile，`piuse` 使用 computer-use profile
+  - 兩者皆以 `PI_CODING_AGENT_SESSION_DIR` 指定共用工作階段目錄 `~/.pi/sessions`
 
 - fish
   - 主設定檔：`~/.config/fish/config.fish`
