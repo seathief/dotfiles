@@ -4,7 +4,7 @@
   - 主設定檔：`~/.zshrc`
   - 輔助腳本：`~/.zsh/helper.sh`
   - Pi profile：`~/.zsh/pi-profiles.sh`
-  - Git worktree：`~/.zsh/git-worktree.sh`
+  - `pisurvey` 使用 survey profile，並以 `PI_CODING_AGENT_SESSION_DIR` 指定共用工作階段目錄 `~/.pi/sessions`
 
 - fish
   - 主設定檔：`~/.config/fish/config.fish`
@@ -26,7 +26,7 @@
   - 設定檔：`~/.config/direnv/direnvrc`
 
 - gpg-agent
-  - 設定檔:`private_dot_gnupg/gpg-agent.conf.tmpl`
+  - 設定檔：`private_dot_gnupg/gpg-agent.conf.tmpl`
 
 - claude code
   - 設定檔：`~/.claude/CLAUDE.md`
