@@ -1,0 +1,33 @@
+onboarding = false
+
+[theme]
+# Built-in themes: catppuccin, terminal, tokyo-night, dracula, nord,
+#                  gruvbox, one-dark, solarized, kanagawa, rose-pine,
+#                  vesper
+name = "dracula"
+
+[keys]
+prefix = "ctrl+a"
+
+
+new_workspace = "prefix+shift+n"
+new_worktree = "prefix+shift+g"
+
+
+new_tab = "prefix+shift+t"
+rename_tab = "prefix+,"
+
+previous_tab = "prefix+right"
+next_tab = "prefix+left"
+split_vertical = "prefix+\\"
+split_horizontal = "prefix+/"
+
+
+[worktrees]
+directory = "~/.herdr/worktrees"
+
+[advanced]
+scrollback_limit_bytes = 10000000
+
+[ui]
+agent_panel_sort = "spaces"
