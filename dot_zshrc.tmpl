@@ -87,6 +87,9 @@ zshaddhistory() {
 ## install an homebrew formula without updating homebrew itself
 export HOMEBREW_AUTO_UPDATE_SECS=43200
 
+## HiNet -> Fastly IPv4 packet loss: pin GitHub release-asset hosts to Fastly IPv6
+export HOMEBREW_CURLRC="$HOME/.config/homebrew/curlrc"
+
 # eza: a ls replacement
 alias ls='eza --grid --color auto --icons --sort=type'
 
@@ -160,7 +163,8 @@ eval $(thefuck --alias)
 
 # pnpm
 export PNPM_HOME="$HOME/Library/pnpm"
-export PATH="$PNPM_HOME:$PATH"
+# $PNPM_HOME/bin is where pnpm >=10 places global bins ($PNPM_HOME itself only has pre-v10 leftovers)
+export PATH="$PNPM_HOME/bin:$PNPM_HOME:$PATH"
 
 # mosh
 mosh-screen () {
@@ -257,9 +261,6 @@ export ENABLE_LSP_TOOL=1
 # OPENAI
 # export OPENAI_API_KEY=$(pass show openai/api/general)
 
-# opencode
-export PATH=/Users/seathief/.opencode/bin:$PATH
-
 # codex
 # alias codex='CODEX_HOME="$PWD/.codex" codex'
 
@@ -285,6 +286,13 @@ done
 
 # Added by Antigravity CLI installer
 export PATH="/Users/seathief/.local/bin:$PATH"
+alias agy="agy --dangerously-skip-permissions"
+
+# Added by Antigravity IDE
+export PATH="/Users/seathief/.antigravity-ide/antigravity-ide/bin:$PATH"
+
+# as grok suggest
+export COLORTERM="truecolor"
 
 # zoxide
 # Keep this after the final compinit so zoxide's compdef registration is not reset.
@@ -292,3 +300,5 @@ eval "$(zoxide init zsh)"
 
 # stop profiling zshrc
 # zprof
+
+

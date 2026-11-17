@@ -44,7 +44,6 @@ set -gx FZF_DEFAULT_COMMAND 'fd --type file'
 set -gx FZF_DEFAULT_OPTS "--bind='ctrl-o:execute(code {})+abort'"
 
 if status is-interactive
-    alias ls 'eza --grid --color auto --icons --sort=type'
     alias ll 'eza --long --color always --icons --sort=type'
     alias la 'eza --grid --all --color auto --icons --sort=type'
     alias lla 'eza --long --all --color auto --icons --sort=type'
