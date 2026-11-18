@@ -23,9 +23,6 @@
 - tmux
   - 設定檔：`~/.tmux.conf`
 
-- direnv
-  - 設定檔：`~/.config/direnv/direnvrc`
-
 - gpg-agent
   - 設定檔：`private_dot_gnupg/gpg-agent.conf.tmpl`
 
