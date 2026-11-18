@@ -16,6 +16,8 @@
 - git
   - 全域設定檔：`~/.gitconfig`
   - 全域忽略設定：`~/.gitignore_global`
+  - 不設 `core.hooksPath`：全域 hook 會吃掉各 repo 自己的 hook
+  - 新 worktree 要帶 `.env` 時手動跑 `~/bin/worktree-sync-env.sh`
 
 - herdr
   - 設定檔：`~/.config/herdr/config.toml`

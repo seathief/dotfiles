@@ -5,7 +5,6 @@
 	excludesfile = /Users/seathief/.gitignore_global
 	pager = delta
 	quotepath = false
-	hooksPath = /Users/seathief/.githooks
 [commit]
 	template = ~/.stCommitMsg
 [init]
