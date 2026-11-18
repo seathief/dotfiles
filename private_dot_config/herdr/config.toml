@@ -31,3 +31,5 @@ scrollback_limit_bytes = 10000000
 
 [ui]
 agent_panel_sort = "spaces"
+# prefix+x 關 pane 前先問一次，避免誤關掉跑著 nvim 的 pane
+confirm_close = true
